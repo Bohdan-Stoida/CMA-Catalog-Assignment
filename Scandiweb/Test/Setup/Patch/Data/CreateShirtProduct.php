@@ -72,12 +72,12 @@ class CreateShirtProduct implements DataPatchInterface
         $this->categoryCollectionFactory = $categoryCollectionFactory;
     }
 
-    public static function getDependencies() : array
+    public static function getDependencies(): array
     {
         return [];
     }
 
-    public function getAliases() : array
+    public function getAliases(): array
     {
         return [];
     }
@@ -85,7 +85,7 @@ class CreateShirtProduct implements DataPatchInterface
     /**
      * @throws Exception
      */
-    public function apply() : void
+    public function apply(): void
     {
         $this->appState->emulateAreaCode('adminhtml', [$this, 'execute']);
     }
