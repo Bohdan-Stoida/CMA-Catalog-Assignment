@@ -27,19 +27,14 @@ use Magento\Store\Model\StoreManagerInterface;
 
 class CreateShirtProduct implements DataPatchInterface
 {
-    protected ProductInterfaceFactory $productFactory;
-    protected ProductRepositoryInterface $productRepository;
-    protected State $appState;
-    protected EavSetup $eavSetup;
-    protected StoreManagerInterface $storeManager;
-    protected SourceItemInterfaceFactory $sourceItemFactory;
-    protected SourceItemsSaveInterface $sourceItemsSave;
-    protected CategoryLinkManagementInterface $categoryLinkManagement;
-    protected CollectionFactory $categoryCollectionFactory;
+    /**
+     * @var SourceItemInterface[]
+     */
     protected array $sourceItems = [];
 
     /**
-     * Migration patch constructor.
+     * CreateShirtProduct constructor.
+     *
      * @param ProductInterfaceFactory $productFactory
      * @param ProductRepositoryInterface $productRepository
      * @param State $appState
@@ -51,38 +46,36 @@ class CreateShirtProduct implements DataPatchInterface
      * @param CollectionFactory $categoryCollectionFactory
      */
     public function __construct(
-        ProductInterfaceFactory $productFactory,
-        ProductRepositoryInterface $productRepository,
-        State $appState,
-        EavSetup $eavSetup,
-        StoreManagerInterface $storeManager,
-        SourceItemInterfaceFactory $sourceItemFactory,
-        SourceItemsSaveInterface $sourceItemsSave,
-        CategoryLinkManagementInterface $categoryLinkManagement,
-        CollectionFactory $categoryCollectionFactory
+        protected ProductInterfaceFactory $productFactory,
+        protected ProductRepositoryInterface $productRepository,
+        protected State $appState,
+        protected EavSetup $eavSetup,
+        protected StoreManagerInterface $storeManager,
+        protected SourceItemInterfaceFactory $sourceItemFactory,
+        protected SourceItemsSaveInterface $sourceItemsSave,
+        protected CategoryLinkManagementInterface $categoryLinkManagement,
+        protected CollectionFactory $categoryCollectionFactory
     ) {
-        $this->productFactory = $productFactory;
-        $this->productRepository = $productRepository;
-        $this->appState = $appState;
-        $this->eavSetup = $eavSetup;
-        $this->storeManager = $storeManager;
-        $this->sourceItemFactory = $sourceItemFactory;
-        $this->sourceItemsSave = $sourceItemsSave;
-        $this->categoryLinkManagement = $categoryLinkManagement;
-        $this->categoryCollectionFactory = $categoryCollectionFactory;
     }
 
+    /**
+     * @return string[]
+     */
     public static function getDependencies(): array
     {
         return [];
     }
 
+    /**
+     * @return string[]
+     */
     public function getAliases(): array
     {
         return [];
     }
 
     /**
+     * @return void
      * @throws Exception
      */
     public function apply(): void
@@ -91,12 +84,13 @@ class CreateShirtProduct implements DataPatchInterface
     }
 
     /**
+     * @return void
      * @throws CouldNotSaveException
+     * @throws InputException
      * @throws LocalizedException
      * @throws NoSuchEntityException
-     * @throws ValidationException
      * @throws StateException
-     * @throws InputException
+     * @throws ValidationException
      */
     public function execute(): void
     {
@@ -106,11 +100,12 @@ class CreateShirtProduct implements DataPatchInterface
     }
 
     /**
-     * @throws NoSuchEntityException
+     * @return Product
      * @throws CouldNotSaveException
-     * @throws StateException
-     * @throws LocalizedException
      * @throws InputException
+     * @throws LocalizedException
+     * @throws NoSuchEntityException
+     * @throws StateException
      */
     private function createProduct(): Product
     {
@@ -136,9 +131,11 @@ class CreateShirtProduct implements DataPatchInterface
     }
 
     /**
-     * @throws ValidationException
+     * @param Product $product
+     * @return void
      * @throws CouldNotSaveException
      * @throws InputException
+     * @throws ValidationException
      */
     private function createSourceItem(Product $product): void
     {
@@ -153,6 +150,9 @@ class CreateShirtProduct implements DataPatchInterface
     }
 
     /**
+     * @param Product $product
+     * @param array $categoryTitles
+     * @return void
      * @throws LocalizedException
      */
     private function assignProductToCategories(Product $product, array $categoryTitles): void
